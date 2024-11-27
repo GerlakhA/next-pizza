@@ -13,23 +13,18 @@ type Props = {
 }
 
 export const ProductCard = ({ product, ingredients, price }: Props) => {
+	console.log(product.imageUrl)
 	return (
 		<div className='p-4'>
 			<Link href={`/product/${product.id}`}>
 				<div className='flex justify-center p-6 bg-secondary rounded-lg h-[260px]'>
-					<Image
-						src={`/${product.imageUrl}`}
-						width={215}
-						height={215}
-						alt={product.name}
-					/>
+					<Image src={product.imageUrl} width={215} height={215} alt={product.name} />
 				</div>
 			</Link>
 
 			<Title text={product.name} size='sm' className='mb-1 mt-3 font-bold' />
 			<p className='text-sm text-gray-400'>
-				Цыпленок, моцарелла, сыры чеддер и пармезан, сырный соус, томаты, соус альфредо,
-				чеснок
+				Цыпленок, моцарелла, сыры чеддер и пармезан, сырный соус, томаты, соус альфредо, чеснок
 			</p>
 
 			<div className='flex justify-between items-center'>

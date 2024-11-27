@@ -1,13 +1,13 @@
-import { URL } from '@/config/constants'
+import { ApiRoutes } from '@/config/constants'
+import { AxiosInstance } from '@/services/instance'
 import { Category } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
-import axios from 'axios'
 
 export const useGetCategories = () => {
 	const options = useQuery({
 		queryKey: ['categories'],
 		queryFn: async () => {
-			const res = await axios.get<Category[]>(`${URL}/categories`)
+			const res = await AxiosInstance.get<Category[]>(ApiRoutes.CATEGORIES)
 			return res.data
 		}
 	})
