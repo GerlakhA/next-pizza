@@ -18,11 +18,15 @@ const SearchInput = ({ className }: Props) => {
 	const [searchQuery, setSearchQuery] = useState('')
 	const [products, setProducts] = useState<Product[]>([])
 	const [focused, setFocused] = useState(false)
-	// const debouncedValue = useDe
 
 	const ref = useRef(null)
 
 	useClickAway(ref, () => setFocused(false))
+
+	const handleClick = () => {
+		setFocused(false)
+		setSearchQuery('')
+	}
 
 	useDebounce(
 		() => {
@@ -61,6 +65,7 @@ const SearchInput = ({ className }: Props) => {
 							<Link
 								key={product.id}
 								href={`/product/${product.id}`}
+								onClick={handleClick}
 								className='flex items-center gap-1 px-3 py-2 hover:bg-primary/10 cursor-pointer'
 							>
 								<Image src={product.imageUrl} width={40} height={40} alt={product.imageUrl} />

@@ -15,7 +15,6 @@ export const Categories = ({ className }: Props) => {
 	// if (isLoading) {
 	// 	return <h1>Loading...</h1>
 	// }
-	console.log('test: ', categoryId)
 
 	return (
 		<div className={cn('inline-flex gap-1 bg-gray-50 p-2 rounded-2xl', className)}>
@@ -28,9 +27,7 @@ export const Categories = ({ className }: Props) => {
 						categoryId === i && 'bg-white shadow-md shadow-gray-200 text-primary'
 					)}
 				>
-					<button onClick={() => console.log('test2: ', category.id)}>
-						{category.name}
-					</button>
+					<button onClick={() => {}}>{category.name}</button>
 				</a>
 			))}
 		</div>

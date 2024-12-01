@@ -13,7 +13,6 @@ type Props = {
 }
 
 export const ProductCard = ({ product, ingredients, price }: Props) => {
-	console.log(product.imageUrl)
 	return (
 		<div className='p-4'>
 			<Link href={`/product/${product.id}`}>

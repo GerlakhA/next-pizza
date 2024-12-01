@@ -1,12 +1,12 @@
 'use client'
 
+import { useFiltersIngredients } from '@/hooks/useFiltersIngredients'
 import { CheckboxFiltersGroup } from '@/shared/components/shared/checkbox-filters-group'
-import { FilterCheckbox } from '@/shared/components/shared/filter-checkbox'
 import { RangeSlider } from '@/shared/components/shared/range-slider'
 import { Title } from '@/shared/components/shared/title'
 import { Input } from '@/shared/components/ui/input'
 import { useState } from 'react'
-import { allCheckbox, visableCheckbox } from './contants'
+import { useSet } from 'react-use'
 
 interface Props {
 	className?: string
@@ -14,14 +14,51 @@ interface Props {
 
 export const Filters = ({ className }: Props) => {
 	const [price, setPrice] = useState({ minimum: 0, maximum: 10000 })
+	const [sizesIds, { toggle: toggleSizesId }] = useSet(new Set<string>([]))
+	const [typesIds, { toggle: toggleTypeId }] = useSet(new Set<string>([]))
+	const {
+		data: ingredients,
+		isLoading,
+		selectedIds,
+		onChangeCheckboxId
+	} = useFiltersIngredients()
+
+	const visibleIngredients = ingredients?.map(ingredient => ({
+		text: ingredient.name,
+		value: String(ingredient.id)
+	}))
 
 	return (
 		<div className={className}>
 			<Title text='Фильтрация ' size='sm' className='mb-5 font-bold' />
 
 			<div className='flex flex-col gap-4'>
-				<FilterCheckbox text='Можно собирать' value='1' />
-				<FilterCheckbox text='Новинки' value='2' />
+				<CheckboxFiltersGroup
+					title='Тип теста'
+					name={'type'}
+					className='mt-5'
+					selectedIds={typesIds}
+					onChange={toggleTypeId}
+					isLoading={isLoading}
+					visableCheckbox={[
+						{ value: '1', text: 'Тонкое' },
+						{ value: '2', text: 'Толстое' }
+					]}
+				/>
+
+				<CheckboxFiltersGroup
+					title='Размеры'
+					name={'sizes'}
+					className='mb-5'
+					onChange={toggleSizesId}
+					selectedIds={sizesIds}
+					isLoading={isLoading}
+					visableCheckbox={[
+						{ text: '20 см', value: '20' },
+						{ text: '30 см', value: '30' },
+						{ text: '40 см', value: '40' }
+					]}
+				/>
 			</div>
 
 			<div className='mt-5 border-y border-y-neutral-100 py-6 pb-7'>
@@ -60,10 +97,14 @@ export const Filters = ({ className }: Props) => {
 
 			<CheckboxFiltersGroup
 				title='Ингридиенты'
+				name={'ingredients'}
 				className='mt-5'
 				limit={6}
-				visableCheckbox={visableCheckbox}
-				checkbox={allCheckbox}
+				selectedIds={selectedIds}
+				onChange={onChangeCheckboxId}
+				isLoading={isLoading}
+				visableCheckbox={visibleIngredients?.slice(0, 6)}
+				checkbox={visibleIngredients}
 			/>
 		</div>
 	)
