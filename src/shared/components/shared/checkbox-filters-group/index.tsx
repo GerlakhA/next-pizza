@@ -51,7 +51,7 @@ export const CheckboxFiltersGroup = ({
 
 	const checkLimitCheckbox = showAll
 		? checkbox?.filter(item => item.text?.toLowerCase().includes(searchValue.toLowerCase()))
-		: visableCheckbox
+		: (checkbox || visableCheckbox)?.slice(0, limit)
 
 	return (
 		<div className={className}>
