@@ -6,16 +6,24 @@ import { TFilters } from '@/enteties/filters/config/types'
 import { CheckboxFiltersGroup } from '@/enteties/filters/ui'
 import { useFiltersIngredients } from '@/hooks/useFiltersIngredients'
 import { RangeSlider, Title } from '@/shared'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import qs from 'qs'
 import { useEffect, useState } from 'react'
 import { useSet } from 'react-use'
 
 export const Filters = ({ className }: TFilters) => {
 	const router = useRouter()
-	const [price, setPrice] = useState({ minPrice: 0, maxPrice: 10000 })
-	const [sizesIds, { toggle: toggleSizesId }] = useSet(new Set<string>([]))
-	const [typesIds, { toggle: toggleTypeId }] = useSet(new Set<string>([]))
+	const searchParams = useSearchParams()
+	const [price, setPrice] = useState({
+		minPrice: Number(searchParams.get('minPrice')) || undefined,
+		maxPrice: Number(searchParams.get('maxPrice')) || undefined
+	})
+	const [sizesIds, { toggle: toggleSizesId }] = useSet(
+		new Set<string>(searchParams.get('sizes') ? searchParams.get('sizes')?.split(',') : [])
+	)
+	const [typesIds, { toggle: toggleTypeId }] = useSet(
+		new Set<string>(searchParams.get('type') ? searchParams.get('type')?.split(',') : [])
+	)
 	const {
 		data: ingredients,
 		isLoading,
@@ -39,8 +47,12 @@ export const Filters = ({ className }: TFilters) => {
 			arrayFormat: 'comma'
 		})
 
-		router.push(`?${queryString}`)
+		router.push(`?${queryString}`, {
+			scroll: false
+		})
 	}, [price, sizesIds, typesIds, selectedIds])
+
+	console.log(searchParams)
 
 	return (
 		<div className={className}>
@@ -97,7 +109,7 @@ export const Filters = ({ className }: TFilters) => {
 					min={0}
 					max={10000}
 					step={10}
-					value={[price.minPrice, price.maxPrice]}
+					value={[price.minPrice || 0, price.maxPrice || 10000]}
 					onValueChange={([minPrice, maxPrice]) => setPrice({ minPrice, maxPrice })}
 				/>
 			</div>
