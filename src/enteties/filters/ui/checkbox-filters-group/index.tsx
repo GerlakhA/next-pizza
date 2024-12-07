@@ -1,25 +1,10 @@
 'use client'
 
-import { FilterChecboxProps, FilterCheckbox } from '@/shared/components/shared/filter-checkbox'
+import { TCheckboxFiltersGroup } from '@/enteties/filters/config/types'
+import { FilterCheckbox } from '@/enteties/filters/ui'
 import { Skeleton } from '@/shared/components/ui'
 import { Input } from '@/shared/components/ui/input'
 import { useState } from 'react'
-
-type Checkbox = FilterChecboxProps
-
-type Props = {
-	title: string
-	className?: string
-	checkbox?: Checkbox[]
-	visableCheckbox?: Checkbox[]
-	limit?: number
-	selectedIds: Set<string>
-	name: string
-	isLoading: boolean
-	inputPlaceholder?: string
-	onChange: (value: string) => void
-	defaultValue?: string[]
-}
 
 export const CheckboxFiltersGroup = ({
 	className,
@@ -33,7 +18,7 @@ export const CheckboxFiltersGroup = ({
 	selectedIds,
 	onChange,
 	defaultValue
-}: Props) => {
+}: TCheckboxFiltersGroup) => {
 	const [searchValue, setSearchValue] = useState('')
 	const [showAll, setShowAll] = useState(false)
 

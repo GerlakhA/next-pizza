@@ -1,18 +1,11 @@
+import { TProductCard } from '@/enteties/product/config/constants'
 import { Title } from '@/shared/components/shared'
 import { Button } from '@/shared/components/ui/button'
-import { ProductWithRelations } from '@/types'
-import { Ingredient } from '@prisma/client'
 import { Plus } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-type Props = {
-	product: ProductWithRelations
-	ingredients: Ingredient[]
-	price: number
-}
-
-export const ProductCard = ({ product, ingredients, price }: Props) => {
+export const ProductCard = ({ product, ingredients, price }: TProductCard) => {
 	return (
 		<div className='p-4'>
 			<Link href={`/product/${product.id}`}>

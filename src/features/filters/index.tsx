@@ -1,11 +1,14 @@
 'use client'
 
+import { checboxSizes, checboxTypes } from '@/enteties/filters/config/constants'
+import { CheckboxFiltersGroup } from '@/enteties/filters/ui'
 import { useFiltersIngredients } from '@/hooks/useFiltersIngredients'
-import { CheckboxFiltersGroup } from '@/shared/components/shared/checkbox-filters-group'
 import { RangeSlider } from '@/shared/components/shared/range-slider'
 import { Title } from '@/shared/components/shared/title'
 import { Input } from '@/shared/components/ui/input'
-import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import qs from 'qs'
+import { useEffect, useState } from 'react'
 import { useSet } from 'react-use'
 
 interface Props {
@@ -13,7 +16,8 @@ interface Props {
 }
 
 export const Filters = ({ className }: Props) => {
-	const [price, setPrice] = useState({ minimum: 0, maximum: 10000 })
+	const router = useRouter()
+	const [price, setPrice] = useState({ minPrice: 0, maxPrice: 10000 })
 	const [sizesIds, { toggle: toggleSizesId }] = useSet(new Set<string>([]))
 	const [typesIds, { toggle: toggleTypeId }] = useSet(new Set<string>([]))
 	const {
@@ -28,6 +32,20 @@ export const Filters = ({ className }: Props) => {
 		value: String(ingredient.id)
 	}))
 
+	useEffect(() => {
+		const filters = {
+			...price,
+			sizes: Array.from(sizesIds),
+			type: Array.from(typesIds),
+			ingredients: Array.from(selectedIds)
+		}
+		const queryString = qs.stringify(filters, {
+			arrayFormat: 'comma'
+		})
+
+		router.push(`?${queryString}`)
+	}, [price, sizesIds, typesIds, selectedIds])
+
 	return (
 		<div className={className}>
 			<Title text='Фильтрация ' size='sm' className='mb-5 font-bold' />
@@ -40,10 +58,7 @@ export const Filters = ({ className }: Props) => {
 					selectedIds={typesIds}
 					onChange={toggleTypeId}
 					isLoading={isLoading}
-					visableCheckbox={[
-						{ value: '1', text: 'Тонкое' },
-						{ value: '2', text: 'Толстое' }
-					]}
+					visableCheckbox={checboxTypes}
 				/>
 
 				<CheckboxFiltersGroup
@@ -53,11 +68,7 @@ export const Filters = ({ className }: Props) => {
 					onChange={toggleSizesId}
 					selectedIds={sizesIds}
 					isLoading={isLoading}
-					visableCheckbox={[
-						{ text: '20 см', value: '20' },
-						{ text: '30 см', value: '30' },
-						{ text: '40 см', value: '40' }
-					]}
+					visableCheckbox={checboxSizes}
 				/>
 			</div>
 
@@ -67,21 +78,21 @@ export const Filters = ({ className }: Props) => {
 					<Input
 						type='number'
 						placeholder='0'
-						value={String(price.minimum)}
+						value={String(price.minPrice)}
 						min={0}
 						max={10000}
 						onChange={e =>
-							setPrice({ minimum: Number(e.target.value), maximum: price.maximum })
+							setPrice({ minPrice: Number(e.target.value), maxPrice: price.maxPrice })
 						}
 					/>
 					<Input
 						type='number'
 						placeholder='10000'
-						value={String(price.maximum)}
+						value={String(price.maxPrice)}
 						min={0}
 						max={10000}
 						onChange={e =>
-							setPrice({ minimum: price.minimum, maximum: Number(e.target.value) })
+							setPrice({ minPrice: price.minPrice, maxPrice: Number(e.target.value) })
 						}
 					/>
 				</div>
@@ -90,8 +101,8 @@ export const Filters = ({ className }: Props) => {
 					min={0}
 					max={10000}
 					step={10}
-					value={[price.minimum, price.maximum]}
-					onValueChange={([minimum, maximum]) => setPrice({ minimum, maximum })}
+					value={[price.minPrice, price.maxPrice]}
+					onValueChange={([minPrice, maxPrice]) => setPrice({ minPrice, maxPrice })}
 				/>
 			</div>
 

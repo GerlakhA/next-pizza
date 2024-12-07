@@ -5,13 +5,14 @@ import { useIntersection } from 'react-use'
 
 import { cn } from '@/lib/utils'
 // import { useCategoryStore } from '@/shared/store'
-import { ProductCard, Title } from '@/shared/components/shared'
+import { ProductCard } from '@/enteties/product/ui'
+import { Title } from '@/shared/components/shared'
 import { useCategoryStore } from '@/store/category'
 import { ProductWithRelations } from '@/types'
 
 interface Props {
 	title: string
-	items: ProductWithRelations[] | undefined
+	items?: ProductWithRelations[]
 	categoryId: number
 	className?: string
 	listClassName?: string

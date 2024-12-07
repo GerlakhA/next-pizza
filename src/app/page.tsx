@@ -1,14 +1,10 @@
 'use client'
 
+import { Filters } from '@/features/filters'
+import { ProductsGroupList } from '@/features/products-group-list'
 import { useGetProducts } from '@/hooks/useGetProducts'
 import { Skeleton } from '@/shared/components'
-import {
-	Container,
-	Filters,
-	ProductsGroupList,
-	Title,
-	TopBar
-} from '@/shared/components/shared'
+import { Container, Title, TopBar } from '@/shared/components/shared'
 
 export default function Home() {
 	const { data: pizzas, isLoading } = useGetProducts()
