@@ -1,9 +1,9 @@
 'use client'
 
+import { Input, Skeleton } from '@/components'
 import { TCheckboxFiltersGroup } from '@/enteties/filters/config/types'
 import { FilterCheckbox } from '@/enteties/filters/ui'
-import { Skeleton } from '@/shared/components/ui'
-import { Input } from '@/shared/components/ui/input'
+import { fakeArray } from '@/lib/helpers'
 import { useState } from 'react'
 
 export const CheckboxFiltersGroup = ({
@@ -26,9 +26,9 @@ export const CheckboxFiltersGroup = ({
 		return (
 			<div className=''>
 				<p className='font-bold mb-3 mt-5'>{title}</p>
-				{...Array(limit)
-					.fill(0)
-					.map((_, i) => <Skeleton key={i} className='h-6 mb-5 rounded-[8px]' />)}
+				{fakeArray(limit).map((_, i) => (
+					<Skeleton key={i} className='h-6 mb-5 rounded-[8px]' />
+				))}
 				<Skeleton className='w-28 h-6 mb-5 rounded-[8px]' />
 			</div>
 		)

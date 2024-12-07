@@ -1,8 +1,8 @@
 'use client'
 
+import { Skeleton } from '@/components'
 import { useGetCategories } from '@/hooks/useGetCategories'
 import { cn } from '@/lib/utils'
-import { Skeleton } from '@/shared/components/ui'
 import { useCategoryStore } from '@/store/category'
 
 interface Props {

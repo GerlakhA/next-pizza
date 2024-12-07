@@ -22,3 +22,7 @@ export type TCheckboxFiltersGroup = {
 	onChange: (value: string) => void
 	defaultValue?: string[]
 }
+
+export type TFilters = {
+	className?: string
+}

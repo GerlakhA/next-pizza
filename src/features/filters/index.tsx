@@ -1,21 +1,17 @@
 'use client'
 
+import { Input } from '@/components'
 import { checboxSizes, checboxTypes } from '@/enteties/filters/config/constants'
+import { TFilters } from '@/enteties/filters/config/types'
 import { CheckboxFiltersGroup } from '@/enteties/filters/ui'
 import { useFiltersIngredients } from '@/hooks/useFiltersIngredients'
-import { RangeSlider } from '@/shared/components/shared/range-slider'
-import { Title } from '@/shared/components/shared/title'
-import { Input } from '@/shared/components/ui/input'
+import { RangeSlider, Title } from '@/shared'
 import { useRouter } from 'next/navigation'
 import qs from 'qs'
 import { useEffect, useState } from 'react'
 import { useSet } from 'react-use'
 
-interface Props {
-	className?: string
-}
-
-export const Filters = ({ className }: Props) => {
+export const Filters = ({ className }: TFilters) => {
 	const router = useRouter()
 	const [price, setPrice] = useState({ minPrice: 0, maxPrice: 10000 })
 	const [sizesIds, { toggle: toggleSizesId }] = useSet(new Set<string>([]))

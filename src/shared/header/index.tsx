@@ -1,6 +1,6 @@
+import { Button } from '@/components'
 import { cn } from '@/lib/utils'
-import { Container } from '@/shared/components/shared'
-import { Button } from '@/shared/components/ui/button'
+import { Container } from '@/shared'
 import { ArrowRight, ShoppingCart, User } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'

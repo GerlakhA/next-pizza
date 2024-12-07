@@ -1,8 +1,8 @@
 'use client'
 
+import { Input } from '@/components'
 import { cn } from '@/lib/utils'
 import { ProductsService } from '@/services/Products.service'
-import { Input } from '@/shared/components/ui'
 import { Product } from '@prisma/client'
 import { Search } from 'lucide-react'
 import Image from 'next/image'

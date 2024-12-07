@@ -6,7 +6,7 @@ import { useIntersection } from 'react-use'
 import { cn } from '@/lib/utils'
 // import { useCategoryStore } from '@/shared/store'
 import { ProductCard } from '@/enteties/product/ui'
-import { Title } from '@/shared/components/shared'
+import { Title } from '@/shared'
 import { useCategoryStore } from '@/store/category'
 import { ProductWithRelations } from '@/types'
 

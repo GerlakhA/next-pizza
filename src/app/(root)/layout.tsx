@@ -1,8 +1,8 @@
-import { Header } from '@/shared/components/shared'
+import { QueryClientApp } from '@/provider/QueryClientApp'
+import { Header } from '@/shared'
 import type { Metadata } from 'next'
 import { Nunito } from 'next/font/google'
-import { QueryClientApp } from '../provider/QueryClientApp'
-import './globals.css'
+import '../globals.css'
 
 const nunito = Nunito({
 	subsets: ['cyrillic'],

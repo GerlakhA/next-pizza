@@ -1,5 +1,5 @@
+import { Checkbox } from '@/components'
 import { FilterChecboxProps } from '@/enteties/filters/config/types'
-import { Checkbox } from '@/shared/components/ui/checkbox'
 
 export const FilterCheckbox = ({
 	text,
