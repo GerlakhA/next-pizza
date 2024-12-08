@@ -1,22 +1,20 @@
-'use client'
-
-import { Skeleton } from '@/components'
+import { getProductsByCategory } from '@/enteties/categories/api/actions/actions'
 import { Filters } from '@/features/filters'
 import { ProductsGroupList } from '@/features/products-group-list'
-import { useGetProducts } from '@/hooks/useGetProducts'
-import { fakeArray } from '@/lib/helpers'
 import { Container, Title, TopBar } from '@/shared'
 
-export default function Home() {
-	const { data: pizzas, isLoading } = useGetProducts()
-	// const categoryId = useCategoryStore(state => state.categoryId)
+export default async function Home() {
+	// const { data: pizzas, isLoading } = useGetProducts()
+	const categories = await getProductsByCategory()
+
+	if (!categories) return null
 
 	return (
 		<main>
 			<Container className='mt-10'>
 				<Title text='Все пиццы' size='lg' className='font-extrabold' />
 			</Container>
-			<TopBar />
+			<TopBar categories={categories} />
 
 			<Container className='mt-10 pb-14'>
 				<div className='flex gap-[80px]'>
@@ -25,7 +23,7 @@ export default function Home() {
 					</div>
 					<div className='flex-1'>
 						<div className='flex flex-col gap-16'>
-							{isLoading ? (
+							{/* {isLoading ? (
 								<div className={'grid grid-cols-3 gap-[50px]'}>
 									{fakeArray(6).map((_, i) => (
 										<div key={i} className='p-4'>
@@ -46,11 +44,17 @@ export default function Home() {
 										</div>
 									))}
 								</div>
-							) : (
-								<>
-									<ProductsGroupList title='Пиццы' items={pizzas} categoryId={0} />
-									<ProductsGroupList title='Завтрак' items={pizzas} categoryId={1} />
-								</>
+							) : ( */}
+							{categories.map(
+								category =>
+									category.products.length > 0 && (
+										<ProductsGroupList
+											key={category.id}
+											title={category.name}
+											items={category.products}
+											categoryId={category.id}
+										/>
+									)
 							)}
 						</div>
 					</div>
