@@ -4,55 +4,27 @@ import { Input } from '@/components'
 import { checboxSizes, checboxTypes } from '@/enteties/filters/config/constants'
 import { TFilters } from '@/enteties/filters/config/types'
 import { CheckboxFiltersGroup } from '@/enteties/filters/ui'
-import { useFiltersIngredients } from '@/hooks/useFiltersIngredients'
+import { useFilterFromSearchParams } from '@/hooks/useFilterFromSearchParams'
 import { RangeSlider, Title } from '@/shared'
-import { useRouter, useSearchParams } from 'next/navigation'
-import qs from 'qs'
-import { useEffect, useState } from 'react'
-import { useSet } from 'react-use'
 
 export const Filters = ({ className }: TFilters) => {
-	const router = useRouter()
-	const searchParams = useSearchParams()
-	const [price, setPrice] = useState({
-		minPrice: Number(searchParams.get('minPrice')) || undefined,
-		maxPrice: Number(searchParams.get('maxPrice')) || undefined
-	})
-	const [sizesIds, { toggle: toggleSizesId }] = useSet(
-		new Set<string>(searchParams.get('sizes') ? searchParams.get('sizes')?.split(',') : [])
-	)
-	const [typesIds, { toggle: toggleTypeId }] = useSet(
-		new Set<string>(searchParams.get('type') ? searchParams.get('type')?.split(',') : [])
-	)
 	const {
-		data: ingredients,
+		ingredients,
+		price,
+		setPrice,
 		isLoading,
-		selectedIds,
-		onChangeCheckboxId
-	} = useFiltersIngredients()
+		onChangeCheckboxId,
+		ingredientsIds,
+		typesIds,
+		sizesIds,
+		toggleSizesId,
+		toggleTypeId
+	} = useFilterFromSearchParams()
 
 	const visibleIngredients = ingredients?.map(ingredient => ({
 		text: ingredient.name,
 		value: String(ingredient.id)
 	}))
-
-	useEffect(() => {
-		const filters = {
-			...price,
-			sizes: Array.from(sizesIds),
-			type: Array.from(typesIds),
-			ingredients: Array.from(selectedIds)
-		}
-		const queryString = qs.stringify(filters, {
-			arrayFormat: 'comma'
-		})
-
-		router.push(`?${queryString}`, {
-			scroll: false
-		})
-	}, [price, sizesIds, typesIds, selectedIds])
-
-	console.log(searchParams)
 
 	return (
 		<div className={className}>
@@ -119,7 +91,7 @@ export const Filters = ({ className }: TFilters) => {
 				name={'ingredients'}
 				className='mt-5'
 				limit={6}
-				selectedIds={selectedIds}
+				selectedIds={ingredientsIds}
 				onChange={onChangeCheckboxId}
 				isLoading={isLoading}
 				visableCheckbox={visibleIngredients?.slice(0, 6)}
