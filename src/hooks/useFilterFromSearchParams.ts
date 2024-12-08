@@ -1,12 +1,15 @@
-import { useRouter, useSearchParams } from 'next/navigation'
-import qs from 'qs'
-import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { useState } from 'react'
 import { useSet } from 'react-use'
-import { useFiltersIngredients } from './useFiltersIngredients'
 
 export const useFilterFromSearchParams = () => {
-	const router = useRouter()
 	const searchParams = useSearchParams()
+
+	const [ingredientsIds, { toggle: toggleIngredientsId }] = useSet(
+		new Set<string>(
+			searchParams.get('ingredients') ? searchParams.get('ingredients')?.split(',') : []
+		)
+	)
 	const [price, setPrice] = useState({
 		minPrice: Number(searchParams.get('minPrice')) || undefined,
 		maxPrice: Number(searchParams.get('maxPrice')) || undefined
@@ -17,28 +20,6 @@ export const useFilterFromSearchParams = () => {
 	const [typesIds, { toggle: toggleTypeId }] = useSet(
 		new Set<string>(searchParams.get('type') ? searchParams.get('type')?.split(',') : [])
 	)
-	const {
-		data: ingredients,
-		isLoading,
-		ingredientsIds,
-		onChangeCheckboxId
-	} = useFiltersIngredients()
-
-	useEffect(() => {
-		const filters = {
-			...price,
-			sizes: Array.from(sizesIds),
-			type: Array.from(typesIds),
-			ingredients: Array.from(ingredientsIds)
-		}
-		const queryString = qs.stringify(filters, {
-			arrayFormat: 'comma'
-		})
-
-		router.push(`?${queryString}`, {
-			scroll: false
-		})
-	}, [price, sizesIds, typesIds, ingredientsIds])
 
 	return {
 		price,
@@ -48,8 +29,6 @@ export const useFilterFromSearchParams = () => {
 		ingredientsIds,
 		toggleSizesId,
 		toggleTypeId,
-		ingredients,
-		isLoading,
-		onChangeCheckboxId
+		toggleIngredientsId
 	}
 }

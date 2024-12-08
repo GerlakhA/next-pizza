@@ -1,19 +1,30 @@
 'use client'
 
 import { Input } from '@/components'
-import { checboxSizes, checboxTypes } from '@/enteties/filters/config/constants'
+import {
+	checboxSizes,
+	checboxTypes,
+	LIMIT_VISIBLE_INGREDIENTS,
+	MAX_PRICE,
+	MIN_PRICE
+} from '@/enteties/filters/config/constants'
 import { TFilters } from '@/enteties/filters/config/types'
 import { CheckboxFiltersGroup } from '@/enteties/filters/ui'
 import { useFilterFromSearchParams } from '@/hooks/useFilterFromSearchParams'
+import { useFiltersIngredients } from '@/hooks/useFiltersIngredients'
 import { RangeSlider, Title } from '@/shared'
+import { useRouter } from 'next/navigation'
+import qs from 'qs'
+import { useEffect } from 'react'
 
 export const Filters = ({ className }: TFilters) => {
+	const router = useRouter()
+	const { data: ingredients, isLoading } = useFiltersIngredients()
+
 	const {
-		ingredients,
 		price,
 		setPrice,
-		isLoading,
-		onChangeCheckboxId,
+		toggleIngredientsId,
 		ingredientsIds,
 		typesIds,
 		sizesIds,
@@ -25,6 +36,26 @@ export const Filters = ({ className }: TFilters) => {
 		text: ingredient.name,
 		value: String(ingredient.id)
 	}))
+
+	const handleChangePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setPrice({ minPrice: Number(e.target.value), maxPrice: price.maxPrice })
+	}
+
+	useEffect(() => {
+		const filters = {
+			...price,
+			sizes: Array.from(sizesIds),
+			type: Array.from(typesIds),
+			ingredients: Array.from(ingredientsIds)
+		}
+		const queryString = qs.stringify(filters, {
+			arrayFormat: 'comma'
+		})
+
+		router.push(`?${queryString}`, {
+			scroll: false
+		})
+	}, [price, sizesIds, typesIds, ingredientsIds])
 
 	return (
 		<div className={className}>
@@ -57,23 +88,19 @@ export const Filters = ({ className }: TFilters) => {
 				<div className='flex gap-3 mb-5'>
 					<Input
 						type='number'
-						placeholder='0'
+						placeholder={`${MIN_PRICE}`}
 						value={String(price.minPrice)}
-						min={0}
-						max={10000}
-						onChange={e =>
-							setPrice({ minPrice: Number(e.target.value), maxPrice: price.maxPrice })
-						}
+						min={MIN_PRICE}
+						max={MAX_PRICE}
+						onChange={e => handleChangePrice(e)}
 					/>
 					<Input
 						type='number'
-						placeholder='10000'
+						placeholder={`${MAX_PRICE}`}
 						value={String(price.maxPrice)}
-						min={0}
-						max={10000}
-						onChange={e =>
-							setPrice({ minPrice: price.minPrice, maxPrice: Number(e.target.value) })
-						}
+						min={MIN_PRICE}
+						max={MAX_PRICE}
+						onChange={e => handleChangePrice(e)}
 					/>
 				</div>
 
@@ -90,9 +117,9 @@ export const Filters = ({ className }: TFilters) => {
 				title='Ингридиенты'
 				name={'ingredients'}
 				className='mt-5'
-				limit={6}
+				limit={LIMIT_VISIBLE_INGREDIENTS}
 				selectedIds={ingredientsIds}
-				onChange={onChangeCheckboxId}
+				onChange={toggleIngredientsId}
 				isLoading={isLoading}
 				visableCheckbox={visibleIngredients?.slice(0, 6)}
 				checkbox={visibleIngredients}
