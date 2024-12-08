@@ -29,7 +29,7 @@ export const ProductsGroupList: React.FC<Props> = ({
 
 	const intersectionRef = React.useRef(null)
 	const intersection = useIntersection(intersectionRef, {
-		threshold: 0.4
+		threshold: 0.6
 	})
 
 	React.useEffect(() => {
