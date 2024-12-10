@@ -19,7 +19,7 @@ export const ProductCard = ({ product, ingredients, price }: TProductCard) => {
 				Цыпленок, моцарелла, сыры чеддер и пармезан, сырный соус, томаты, соус альфредо, чеснок
 			</p>
 
-			<div className='flex justify-between items-center'>
+			<div className='flex justify-between items-center mt-4'>
 				<span className='text-[20px]'>от {price} ₽</span>
 
 				<Button variant={'secondary'} className='text-base font-bold'>
