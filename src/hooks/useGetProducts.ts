@@ -1,6 +1,6 @@
 import { ApiRoutes } from '@/config/constants'
+import { ProductWithRelations } from '@/config/types'
 import { AxiosInstance } from '@/services/instance'
-import { ProductWithRelations } from '@/types'
 import { useQuery } from '@tanstack/react-query'
 
 export const useGetProducts = () => {

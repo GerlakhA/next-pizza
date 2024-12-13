@@ -5,10 +5,10 @@ import { useIntersection } from 'react-use'
 
 import { cn } from '@/lib/utils'
 // import { useCategoryStore } from '@/shared/store'
+import { ProductWithRelations } from '@/config/types'
 import { ProductCard } from '@/enteties/product/ui'
 import { Title } from '@/shared'
 import { useCategoryStore } from '@/store/category'
-import { ProductWithRelations } from '@/types'
 
 interface Props {
 	title: string
