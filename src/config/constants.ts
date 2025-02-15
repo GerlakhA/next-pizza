@@ -1,7 +1,8 @@
 export enum ApiRoutes {
 	SEARCH_PRODUCTS = '/products/search',
 	CATEGORIES = '/categories',
-	INGREDIENTS = '/ingredients'
+	INGREDIENTS = '/ingredients',
+	CART = '/cart'
 }
 
 export const ECategory: Record<number, string> = {

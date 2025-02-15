@@ -1,12 +1,13 @@
 'use client'
 
 import { Button } from '@/components'
-import { ECategory, PizzaSize, pizzaSizes, PizzaType, pizzaTypes } from '@/config/constants'
+import { EPizzaType, PizzaSize, PizzaType, pizzaTypes } from '@/config/constants'
 import { ProductWithRelations } from '@/config/types'
+import { usePizzaDetails } from '@/hooks/usePizzaDetails'
+import { calcPriceForProduct } from '@/lib/helpers'
 import { cn } from '@/lib/utils'
 import { Ingredient, PizzaImage, Title } from '@/shared'
 import { PizzaVariants } from '@/shared/pizza-variants'
-import { useState } from 'react'
 
 type TChoosePizzaForm = {
 	product: ProductWithRelations
@@ -14,22 +15,33 @@ type TChoosePizzaForm = {
 }
 
 export const ChoosePizzaForm = ({ product, className }: TChoosePizzaForm) => {
-	const [selectedSize, SetSelectedSize] = useState<PizzaSize>(20)
-	const [selectedType, SetSelectedType] = useState<PizzaType>(1)
-
-	const categoryName = ECategory[product.categoryId]
+	const {
+		selectedSize,
+		selectedType,
+		addIngredient,
+		selectedIngredients,
+		setSelectedSize,
+		setSelectedType,
+		availablePizzaSizes
+	} = usePizzaDetails(product.items)
 
 	const handleChangeSize = (value: string) => {
-		SetSelectedSize(Number(value) as PizzaSize)
+		setSelectedSize(Number(value) as PizzaSize)
 	}
 
 	const handleChangeType = (value: string) => {
-		SetSelectedType(Number(value) as PizzaType)
+		setSelectedType(Number(value) as PizzaType)
 	}
 
-	const priceForOtherType =
-		product.items.find(item => item.pizzaType === selectedType && item.size === selectedSize)
-			?.price || 0
+	const pizzaPrice = calcPriceForProduct(
+		product.ingredients,
+		selectedIngredients,
+		product.items,
+		selectedType,
+		selectedSize
+	)
+
+	const pizzaDetails = `${selectedSize} см, тесто: ${EPizzaType[selectedType].toLowerCase()}`
 
 	return (
 		<div className={cn('flex flex-1', className)}>
@@ -37,11 +49,10 @@ export const ChoosePizzaForm = ({ product, className }: TChoosePizzaForm) => {
 
 			<div className='w-[490px] p-6 bg-[#f7f6f5]'>
 				<Title text={product.name} size='md' className='font-extrabold mb-1' />
-				<p className='text-gray-400'>{categoryName}</p>
-				<p className='text-gray-400'>описание продукта</p>
-				<div className='flex flex-col gap-3'>
+				<p className='text-gray-400'>{pizzaDetails}</p>
+				<div className='flex flex-col gap-3 mt-6'>
 					<PizzaVariants
-						items={pizzaSizes}
+						items={availablePizzaSizes}
 						value={String(selectedSize)}
 						onClick={handleChangeSize}
 					/>
@@ -56,7 +67,13 @@ export const ChoosePizzaForm = ({ product, className }: TChoosePizzaForm) => {
 				<div className='bg-gray-50 p-5 rounded-md h-[420px] overflow-y-auto scrollbar mt-6'>
 					<div className='grid grid-cols-3 gap-4'>
 						{product.ingredients.map(ingredient => (
-							<Ingredient key={ingredient.id} ingredient={ingredient} />
+							<Ingredient
+								key={ingredient.id}
+								ingredient={ingredient}
+								ingredients={product.ingredients}
+								onClick={() => addIngredient(ingredient.id)}
+								active={selectedIngredients.has(ingredient.id)}
+							/>
 						))}
 					</div>
 				</div>
@@ -66,7 +83,7 @@ export const ChoosePizzaForm = ({ product, className }: TChoosePizzaForm) => {
 					onClick={() => {}}
 					className='h-[55px] px-10 text-base rounded-[18px] w-full mt-10'
 				>
-					Добавить в корзину за {priceForOtherType} ₽
+					Добавить в корзину за {pizzaPrice} ₽
 				</Button>
 			</div>
 		</div>

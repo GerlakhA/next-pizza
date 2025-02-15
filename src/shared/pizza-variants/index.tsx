@@ -10,12 +10,21 @@ export type Variant = {
 
 type TPizzaVariants = {
 	items: readonly Variant[]
-	onClick?: (value: Variant['value']) => void
+	onClick: (value: Variant['value']) => void
 	value?: Variant['value']
 	className?: string
+	disabled?: boolean
 }
 
-export const PizzaVariants = ({ items, onClick, className, value }: TPizzaVariants) => {
+export const PizzaVariants = ({
+	items,
+	onClick,
+	className,
+	value,
+	disabled
+}: TPizzaVariants) => {
+	// const disable = items.find(item => +item.value === 0)
+
 	return (
 		<div
 			className={cn(
@@ -26,7 +35,8 @@ export const PizzaVariants = ({ items, onClick, className, value }: TPizzaVarian
 			{items.map(item => (
 				<button
 					key={item.name}
-					onClick={() => onClick?.(item.value)}
+					onClick={() => onClick(item.value)}
+					disabled={disabled}
 					className={cn(
 						'flex items-center justify-center cursor-pointer h-[30px] px-5 py-4 flex-1 rounded-3xl transition-all duration-400 text-sm',
 						{
