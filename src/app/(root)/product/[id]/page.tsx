@@ -1,6 +1,6 @@
 import { prisma } from '@/prisma/prisma-client'
-import { Container } from '@/shared'
-import ProductForm from '@/shared/product-form'
+import { Container } from '@/shared/ui'
+import ProductForm from '@/shared/ui/product-form'
 import { notFound } from 'next/navigation'
 
 interface Props {

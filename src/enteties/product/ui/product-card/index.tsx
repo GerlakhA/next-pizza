@@ -1,6 +1,6 @@
 import { Button } from '@/components'
 import { TProductCard } from '@/enteties/product/config/constants'
-import { Title } from '@/shared'
+import { Title } from '@/shared/ui'
 import { Plus } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'

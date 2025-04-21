@@ -1,10 +1,10 @@
-import { Header } from '@/shared'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 import '../globals.css'
+import { Header } from '@/widgets/header'
 
 export const metadata: Metadata = {
-	title: 'Next Pizza | Главная',
+	title: 'Главная',
 	icons: '/logo.png'
 }
 

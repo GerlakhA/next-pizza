@@ -1,13 +1,18 @@
-import { getProductsByCategory } from '@/enteties/categories/api/actions/actions'
-import { Filters } from '@/features/filters'
-import { ProductsGroupList } from '@/features/products-group-list'
-import { Container, Title, TopBar } from '@/shared'
+import { auth } from '@/auth'
+import { getProductsByCategory } from '@/enteties/categories/api'
+import { Container, Title } from '@/shared/ui'
+import { Filters } from '@/widgets/filters'
+import { ProductsGroupList } from '@/widgets/products-group-list'
+import { TopBar } from '@/widgets/top-bar'
 
 export default async function Home() {
 	// const { data: pizzas, isLoading } = useGetProducts()
 	const categories = await getProductsByCategory()
+	const session = await auth()
 
 	if (!categories) return null
+
+	console.log('Session: ', session)
 
 	return (
 		<main>
@@ -56,6 +61,7 @@ export default async function Home() {
 										/>
 									)
 							)}
+							{/* ) */}
 						</div>
 					</div>
 				</div>
