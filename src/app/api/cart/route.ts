@@ -1,9 +1,12 @@
+import { CreateCartItemValues } from '@/config/types'
+import { findOrCreateCart } from '@/lib/findOrCreateCart'
+import { updateCartTotalAmount } from '@/lib/updateCartTotalAmount'
 import { prisma } from '@/prisma/prisma-client'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {
 	try {
-		const token = req.cookies.get('cartToken')?.value
+		const token = '11111'
 
 		if (!token) {
 			return NextResponse.json({ totalAmount: 0, items: [] })
@@ -41,57 +44,58 @@ export async function GET(req: NextRequest) {
 	}
 }
 
-// export async function POST(req: NextRequest) {
-//   try {
-//     let token = req.cookies.get('cartToken')?.value;
+export async function POST(req: NextRequest) {
+	try {
+		let token = '11111'
 
-//     if (!token) {
-//       token = crypto.randomUUID();
-//     }
+		if (!token) {
+			token = crypto.randomUUID()
+		}
 
-//     const userCart = await findOrCreateCart(token);
+		const userCart = await findOrCreateCart(token)
 
-//     const data = (await req.json()) as CreateCartItemValues;
+		const data = (await req.json()) as CreateCartItemValues
 
-//     const findCartItem = await prisma.cartItem.findFirst({
-//       where: {
-//         cartId: userCart.id,
-//         productItemId: data.productItemId,
-//         ingredients: {
-//           every: {
-//             id: { in: data.ingredients },
-//           },
-//         },
-//       },
-//     });
+		const findCartItem = await prisma.cartItem.findFirst({
+			where: {
+				cartId: userCart.id,
+				productItemId: data.productItemId,
+				ingredients: {
+					every: {
+						id: { in: data.ingredients }
+					}
+				}
+			}
+		})
 
-//     // Если товар был найден, делаем +1
-//     if (findCartItem) {
-//       await prisma.cartItem.update({
-//         where: {
-//           id: findCartItem.id,
-//         },
-//         data: {
-//           quantity: findCartItem.quantity + 1,
-//         },
-//       });
-//     } else {
-//       await prisma.cartItem.create({
-//         data: {
-//           cartId: userCart.id,
-//           productItemId: data.productItemId,
-//           quantity: 1,
-//           ingredients: { connect: data.ingredients?.map((id) => ({ id })) },
-//         },
-//       });
-//     }
+		// Если товар был найден, делаем +1
+		if (findCartItem) {
+			await prisma.cartItem.update({
+				where: {
+					id: findCartItem.id
+				},
+				data: {
+					quantity: findCartItem.quantity + 1
+				}
+			})
+		} else {
+			await prisma.cartItem.create({
+				data: {
+					cartId: userCart.id,
+					productItemId: data.productItemId,
+					quantity: 1,
+					ingredients: { connect: data.ingredients?.map(id => ({ id })) }
+				}
+			})
+		}
 
-//     const updatedUserCart = await updateCartTotalAmount(token);
+		const updatedUserCart = await updateCartTotalAmount(token)
 
-//     const resp = NextResponse.json(updatedUserCart);
-//     resp.cookies.set('cartToken', token);
-//     return resp;
-//   } catch (error) {
-//     console.log('[CART_POST] Server error', error);
-//     return NextResponse.json({ message: 'Не удалось создать корзину' }, { status: 500 });
-//   }
+		const resp = NextResponse.json(updatedUserCart)
+		resp.cookies.set('cartToken', token)
+		return resp
+	} catch (error) {
+		console.log('[CART_POST] Server error', error)
+		return NextResponse.json({ message: 'Не удалось создать корзину' }, { status: 500 })
+	}
+}

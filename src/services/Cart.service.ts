@@ -1,6 +1,5 @@
 import { ApiRoutes } from '@/config/constants'
-import { TCart } from '@/config/types'
-import { CartItem } from '@prisma/client'
+import { CreateCartItemValues, TCart } from '@/config/types'
 import { AxiosInstance } from './instance'
 
 export const CartService = {
@@ -9,8 +8,8 @@ export const CartService = {
 		return data
 	},
 
-	async addProduct() {
-		const { data } = await AxiosInstance<CartItem>(ApiRoutes.CART)
+	async addProduct(cartItem: CreateCartItemValues) {
+		const { data } = await AxiosInstance.post<CreateCartItemValues>(ApiRoutes.CART, cartItem)
 		return data
 	}
 }

@@ -1,9 +1,9 @@
 'use server'
 
 import { signIn } from '@/auth'
-import { getUserByEmail } from '@/config/data/user'
 import { DEFAULT_AUTH_REDIRECT } from '@/config/routes'
 import { formSchema } from '@/features/auth/config/schema'
+import { getUserByEmail } from '@/lib/user'
 import { AuthError } from 'next-auth'
 import { z } from 'zod'
 
