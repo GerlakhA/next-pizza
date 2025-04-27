@@ -8,9 +8,10 @@ import Image from 'next/image'
 type TChooseProductForm = {
 	product: ProductWithRelations
 	className?: string
+	onSubmit: () => void
 }
 
-export const ChooseProductForm = ({ product, className }: TChooseProductForm) => {
+export const ChooseProductForm = ({ product, className, onSubmit }: TChooseProductForm) => {
 	const categoryName = ECategory[product.categoryId]
 
 	return (
@@ -34,7 +35,7 @@ export const ChooseProductForm = ({ product, className }: TChooseProductForm) =>
 
 				<Button
 					// loading={loading}
-					onClick={() => {}}
+					onClick={onSubmit}
 					className='h-[55px] px-10 text-base rounded-[18px] w-full'
 				>
 					Добавить в корзину за 100 ₽
