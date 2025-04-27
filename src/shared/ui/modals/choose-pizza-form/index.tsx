@@ -41,6 +41,13 @@ export const ChoosePizzaForm = ({ product, className }: TChoosePizzaForm) => {
 		setSelectedType(Number(value) as PizzaType)
 	}
 
+	const onSubmit = () => {
+		addToCart({
+			productItemId: productId ? productId : 1,
+			ingredients: Array.from(selectedIngredients)
+		})
+	}
+
 	const pizzaPrice = calcPriceForProduct(
 		product.ingredients,
 		selectedIngredients,
@@ -88,12 +95,7 @@ export const ChoosePizzaForm = ({ product, className }: TChoosePizzaForm) => {
 
 				<Button
 					loading={isPending}
-					onClick={() =>
-						addToCart({
-							productItemId: productId ? productId : 1,
-							ingredients: Array.from(selectedIngredients)
-						})
-					}
+					onClick={onSubmit}
 					className='h-[55px] px-10 text-base rounded-[18px] w-full mt-10'
 				>
 					Добавить в корзину за {pizzaPrice} ₽
