@@ -13,10 +13,9 @@ import { PizzaVariants } from '@/shared/ui/pizza-variants'
 type TChoosePizzaForm = {
 	product: ProductWithRelations
 	className?: string
-	onSubmit: () => void
 }
 
-export const ChoosePizzaForm = ({ product, className, onSubmit }: TChoosePizzaForm) => {
+export const ChoosePizzaForm = ({ product, className }: TChoosePizzaForm) => {
 	const {
 		selectedSize,
 		selectedType,
@@ -95,6 +94,8 @@ export const ChoosePizzaForm = ({ product, className, onSubmit }: TChoosePizzaFo
 				</div>
 
 				<Button
+					loading={isPending}
+					onClick={onSubmit}
 					className='h-[55px] px-10 text-base rounded-[18px] w-full mt-10'
 				>
 					Добавить в корзину за {pizzaPrice} ₽
