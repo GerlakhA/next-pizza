@@ -23,7 +23,7 @@ export const ChooseProductModal = ({ product, className }: TChooseProductModal) 
 					className
 				)}
 			>
-				<DialogTitle></DialogTitle>
+				<DialogTitle className='hidden'></DialogTitle>
 				{isPizzaType ? (
 					<ChoosePizzaForm product={product} />
 				) : (
