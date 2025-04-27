@@ -3,8 +3,8 @@
 import { Dialog, DialogContent, DialogTitle } from '@/components'
 import { ProductWithRelations } from '@/config/types'
 import { cn } from '@/lib/utils'
-import { ChoosePizzaForm, ChooseProductForm } from '@/shared/ui/modals'
 import { useRouter } from 'next/navigation'
+import ProductForm from '../../product-form'
 
 type TChooseProductModal = {
 	product: ProductWithRelations
@@ -24,11 +24,7 @@ export const ChooseProductModal = ({ product, className }: TChooseProductModal) 
 				)}
 			>
 				<DialogTitle className='hidden'></DialogTitle>
-				{isPizzaType ? (
-					<ChoosePizzaForm product={product} />
-				) : (
-					<ChooseProductForm product={product} />
-				)}
+				<ProductForm product={product} />
 			</DialogContent>
 		</Dialog>
 	)
