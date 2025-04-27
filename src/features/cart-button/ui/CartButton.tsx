@@ -9,6 +9,7 @@ import {
 	SheetTitle,
 	SheetTrigger
 } from '@/components'
+import { CartItems } from '@/enteties/cart/ui'
 import { useGetCart } from '@/shared/hooks/useGetCart'
 import { ArrowRight, ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
@@ -18,7 +19,8 @@ type Props = {}
 export const CartButton = (props: Props) => {
 	const { data: cartItems } = useGetCart()
 
-	const productLength = cartItems?.items.reduce((acc, item) => acc + item.quantity, 0)
+	const quantity = cartItems?.items.length
+	const totalPriceBtn = cartItems?.totalAmount || 0
 
 	console.log(cartItems)
 
@@ -26,11 +28,11 @@ export const CartButton = (props: Props) => {
 		<Sheet>
 			<SheetTrigger asChild>
 				<Button className='group relative'>
-					<b>{520} р</b>
+					<b>{totalPriceBtn} ₽</b>
 					<span className='h-full w-[1px] bg-white/30 mx-3' />
 					<div className='flex items-center gap-1 transition duration-300 group-hover:opacity-0'>
 						<ShoppingCart className='h-4 w-4 relative' size={16} strokeWidth={2} />
-						<b>{cartItems?.totalAmount}</b>
+						<b>{quantity}</b>
 					</div>
 					<ArrowRight
 						className='w-5 absolute right-5 transition duration-300 -translate-x-2 opacity-0
@@ -38,16 +40,16 @@ export const CartButton = (props: Props) => {
 					/>
 				</Button>
 			</SheetTrigger>
-			<SheetContent className='flex flex-col justify-between pb-0 bg-[#f4f1ee]'>
+			<SheetContent className='flex flex-col pb-0 bg-[#f4f1ee]'>
 				<SheetHeader>
-					<SheetTitle>Корзина</SheetTitle>
+					<SheetTitle className='font-semibold text-2xl'>Корзина</SheetTitle>
 				</SheetHeader>
-				<div>
+				<div className='flex flex-col gap-4 overflow-y-auto'>
 					{cartItems?.items?.map(cart => (
-						<div>{cart.id}</div>
+						<CartItems key={cart.id} cart={cart} />
 					))}
 				</div>
-				<SheetFooter className='-mx-6 bg-white p-8'>
+				<SheetFooter className='-mx-6 bg-white p-8 mt-auto'>
 					<div className='w-full'>
 						<div className='flex mb-4'>
 							<span className='flex flex-1 text-lg text-neutral-500'>

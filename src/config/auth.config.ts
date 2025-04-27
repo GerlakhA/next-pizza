@@ -3,7 +3,7 @@ import { compare } from 'bcryptjs'
 import { NextAuthConfig } from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 import GitHub from 'next-auth/providers/github'
-import { getUserByEmail } from './data/user'
+import { getUserByEmail } from '../lib/user'
 
 export default {
 	providers: [

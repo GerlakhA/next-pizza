@@ -11,6 +11,10 @@ export const usePizzaDetails = (items: ProductItem[]) => {
 
 	const availablePizzaSizes = filteredPizzaByType(items, selectedType)
 
+	const productId = items.find(
+		item => item.pizzaType === selectedType && item.size === selectedSize
+	)?.id
+
 	useEffect(() => {
 		const findActiveSize = availablePizzaSizes.find(item => !item.disabled)
 
@@ -22,6 +26,7 @@ export const usePizzaDetails = (items: ProductItem[]) => {
 	return {
 		selectedSize,
 		selectedType,
+		productId,
 		setSelectedSize,
 		setSelectedType,
 		selectedIngredients,

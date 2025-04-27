@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client'
-import { hashSync } from 'bcrypt'
+import { hashSync } from 'bcryptjs'
 import { _ingredients, categories, products } from './constants'
 import { prisma } from './prisma-client'
 
@@ -28,14 +28,16 @@ async function up() {
 	await prisma.user.createMany({
 		data: [
 			{
-				fullName: 'User Test',
+				id: 'qejywgfiugvkhjfgeoukjv1342',
+				fullname: 'user',
 				email: 'user@test.ru',
 				password: hashSync('111111', 10),
 				verified: new Date(),
 				role: 'USER'
 			},
 			{
-				fullName: 'Admin Admin',
+				id: 'nksjbvflwojfhbliwhpo3blkwhp2673458',
+				fullname: 'Admin Admin',
 				email: 'admin@test.ru',
 				password: hashSync('111111', 10),
 				verified: new Date(),
@@ -133,12 +135,12 @@ async function up() {
 	await prisma.cart.createMany({
 		data: [
 			{
-				userId: 1,
+				userId: 'qejywgfiugvkhjfgeoukjv1342',
 				totalAmount: 0,
 				token: '11111'
 			},
 			{
-				userId: 2,
+				userId: 'nksjbvflwojfhbliwhpo3blkwhp2673458',
 				totalAmount: 0,
 				token: '222222'
 			}

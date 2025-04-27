@@ -21,6 +21,18 @@ export type Category = {
 	updatedAt: Date
 }
 
+export type CartItemDTO = CartItem & {
+	productItem: ProductItem & {
+		product: Product
+	}
+	ingredients: Ingredient[]
+}
+
+export interface CreateCartItemValues {
+	productItemId: number
+	ingredients?: number[]
+}
+
 export type CartDetails = Product & {
 	productItem: ProductItem
 	ingredients: Ingredient[]
@@ -29,8 +41,8 @@ export type CartDetails = Product & {
 export type TCart = {
 	id: number
 	user: User
-	userId: number
-	items: CartItem[]
+	userId: string
+	items: CartItemDTO[]
 	token: string
 	totalAmount: number
 }
