@@ -1,19 +1,24 @@
-import { Title } from '@/shared/ui'
-import { Product } from '@prisma/client'
-import Image from 'next/image'
+'use client'
+
+import { ProductWithRelations } from '@/config/types'
+import { ChoosePizzaForm, ChooseProductForm } from '@/shared/ui'
 
 type Props = {
-	product: Product
-	size: number
+	product: ProductWithRelations
+	size?: number
 }
 
 const ProductForm = ({ product, size }: Props) => {
-	return (
-		<div className='flex flex-col gap-10'>
-			<Image src={product.imageUrl} alt={product.name} width={350} height={350} />
-			<Title text={product.name} />
-		</div>
-	)
+	const firstItem = product?.items[0]
+	const isPizzaForm = Boolean(firstItem.pizzaType)
+
+	const onSubmit = () => {}
+
+	if (isPizzaForm) {
+		return <ChoosePizzaForm product={product} onSubmit={onSubmit} />
+	}
+
+	return <ChooseProductForm product={product} onSubmit={onSubmit} />
 }
 
 export default ProductForm

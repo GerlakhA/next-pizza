@@ -11,19 +11,30 @@ interface Props {
 }
 
 const ProductPageById = async ({ params, size }: Props) => {
-	const productById = await prisma.product.findFirst({
-		where: {
-			id: Number(params.id)
+	const product = await prisma.product.findFirst({
+		where: { id: Number(params.id) },
+		include: {
+			ingredients: true,
+			category: {
+				include: {
+					products: {
+						include: {
+							items: true
+						}
+					}
+				}
+			},
+			items: true
 		}
 	})
 
-	if (!productById) {
+	if (!product) {
 		return notFound()
 	}
 
 	return (
 		<Container className='flex flex-col my-10'>
-			<ProductForm product={productById} size={size} />
+			<ProductForm product={product} size={size} />
 		</Container>
 	)
 }
