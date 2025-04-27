@@ -11,5 +11,11 @@ export const CartService = {
 	async addProduct(cartItem: CreateCartItemValues) {
 		const { data } = await AxiosInstance.post<CreateCartItemValues>(ApiRoutes.CART, cartItem)
 		return data
+	},
+
+	async deleteCartItem(id: number) {
+		const { data } = await AxiosInstance.delete(`${ApiRoutes.CART}/${id}`)
+
+		return data
 	}
 }

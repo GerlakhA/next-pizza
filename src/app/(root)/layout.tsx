@@ -1,7 +1,8 @@
+import { Header } from '@/widgets/header'
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
+import { Toaster } from 'react-hot-toast'
 import '../globals.css'
-import { Header } from '@/widgets/header'
 
 export const metadata: Metadata = {
 	title: 'Главная',
@@ -17,6 +18,7 @@ export default function HomeLayout({
 }>) {
 	return (
 		<main className='min-h-screen'>
+			<Toaster />
 			<Suspense>
 				<Header />
 			</Suspense>

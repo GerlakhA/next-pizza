@@ -42,9 +42,9 @@ export const CartButton = (props: Props) => {
 			</SheetTrigger>
 			<SheetContent className='flex flex-col pb-0 bg-[#f4f1ee]'>
 				<SheetHeader>
-					<SheetTitle>Корзина</SheetTitle>
+					<SheetTitle className='font-semibold text-2xl'>Корзина</SheetTitle>
 				</SheetHeader>
-				<div className=''>
+				<div className='flex flex-col gap-4 overflow-y-auto'>
 					{cartItems?.items?.map(cart => (
 						<CartItems key={cart.id} cart={cart} />
 					))}
