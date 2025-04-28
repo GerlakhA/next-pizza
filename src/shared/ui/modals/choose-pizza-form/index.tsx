@@ -2,10 +2,9 @@
 
 import { Button } from '@/components'
 import { EPizzaType, PizzaSize, PizzaType, pizzaTypes } from '@/config/constants'
-import { CreateCartItemValues, ProductWithRelations } from '@/config/types'
+import { ProductWithRelations } from '@/config/types'
 import { calcPriceForProduct } from '@/lib/helpers'
 import { cn } from '@/lib/utils'
-import { useAddToCart } from '@/shared/hooks/useAddToCart'
 import { usePizzaDetails } from '@/shared/hooks/usePizzaDetails'
 import { Ingredient, PizzaImage, Title } from '@/shared/ui'
 import { PizzaVariants } from '@/shared/ui/pizza-variants'
@@ -13,9 +12,16 @@ import { PizzaVariants } from '@/shared/ui/pizza-variants'
 type TChoosePizzaForm = {
 	product: ProductWithRelations
 	className?: string
+	onSubmit: (productItemId?: number, ingredients?: number[]) => void
+	isLoading: boolean
 }
 
-export const ChoosePizzaForm = ({ product, className }: TChoosePizzaForm) => {
+export const ChoosePizzaForm = ({
+	product,
+	className,
+	onSubmit,
+	isLoading
+}: TChoosePizzaForm) => {
 	const {
 		selectedSize,
 		selectedType,
@@ -27,25 +33,12 @@ export const ChoosePizzaForm = ({ product, className }: TChoosePizzaForm) => {
 		availablePizzaSizes
 	} = usePizzaDetails(product.items)
 
-	const { mutate, isPending } = useAddToCart()
-
-	const addToCart = (data: CreateCartItemValues) => {
-		mutate(data)
-	}
-
 	const handleChangeSize = (value: string) => {
 		setSelectedSize(Number(value) as PizzaSize)
 	}
 
 	const handleChangeType = (value: string) => {
 		setSelectedType(Number(value) as PizzaType)
-	}
-
-	const onSubmit = () => {
-		addToCart({
-			productItemId: productId ? productId : 1,
-			ingredients: Array.from(selectedIngredients)
-		})
 	}
 
 	const pizzaPrice = calcPriceForProduct(
@@ -94,8 +87,8 @@ export const ChoosePizzaForm = ({ product, className }: TChoosePizzaForm) => {
 				</div>
 
 				<Button
-					loading={isPending}
-					onClick={onSubmit}
+					loading={isLoading}
+					onClick={() => onSubmit(productId, Array.from(selectedIngredients))}
 					className='h-[55px] px-10 text-base rounded-[18px] w-full mt-10'
 				>
 					Добавить в корзину за {pizzaPrice} ₽
