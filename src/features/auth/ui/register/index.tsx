@@ -10,6 +10,8 @@ import {
 	FormLabel,
 	FormMessage
 } from '@/components/ui/form'
+import { DEFAULT_VALUES } from '@/features/auth/config/constants'
+import { formSchema } from '@/features/auth/config/schema'
 import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
@@ -17,8 +19,6 @@ import { useTransition } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { z } from 'zod'
-import { DEFAULT_VALUES } from '../config/constants'
-import { formSchema } from '../config/schema'
 
 export const Register = () => {
 	const [isPending, startTransition] = useTransition()

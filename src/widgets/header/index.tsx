@@ -1,6 +1,6 @@
 import { logoutAction } from '@/app/actions/logout'
 import { Button } from '@/components'
-import { CartButton } from '@/features/cart-button/ui'
+import { CartButton } from '@/features/cart/ui'
 import { cn } from '@/lib/utils'
 import { Container, SearchInput } from '@/shared/ui'
 import { LogOut } from 'lucide-react'

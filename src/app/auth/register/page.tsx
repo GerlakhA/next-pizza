@@ -1,4 +1,4 @@
-import { Register } from '@/features/auth/register'
+import { Register } from '@/features/auth/ui'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
