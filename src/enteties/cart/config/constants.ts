@@ -1,0 +1,2 @@
+export const MIN_QUANTITY_PRODUCT = 1
+export const MAX_QUANTITY_PRODUCT = 10

@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {
 	try {
-		const token = '11111'
+		const token = req.cookies.get('cartToken')?.value
 
 		if (!token) {
 			return NextResponse.json({ totalAmount: 0, items: [] })
@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
 	try {
-		let token = '11111'
+		let token = req.cookies.get('cartToken')?.value
 
 		if (!token) {
 			token = crypto.randomUUID()
@@ -68,7 +68,6 @@ export async function POST(req: NextRequest) {
 			}
 		})
 
-		// Если товар был найден, делаем +1
 		if (findCartItem) {
 			await prisma.cartItem.update({
 				where: {

@@ -46,3 +46,10 @@ export type TCart = {
 	token: string
 	totalAmount: number
 }
+
+export type TSign = 'plus' | 'minus'
+
+export type TUpdateQuantity = {
+	id: number
+	quantity: number
+}

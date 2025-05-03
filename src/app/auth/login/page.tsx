@@ -1,4 +1,4 @@
-import { Login } from '@/features/auth'
+import { Login } from '@/features/auth/ui'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {

@@ -1,5 +1,5 @@
 import { ApiRoutes } from '@/config/constants'
-import { CreateCartItemValues, TCart } from '@/config/types'
+import { CreateCartItemValues, TCart, TUpdateQuantity } from '@/config/types'
 import { AxiosInstance } from './instance'
 
 export const CartService = {
@@ -15,6 +15,14 @@ export const CartService = {
 
 	async deleteCartItem(id: number) {
 		const { data } = await AxiosInstance.delete(`${ApiRoutes.CART}/${id}`)
+
+		return data
+	},
+
+	async updateQuantity(updateFields: TUpdateQuantity) {
+		const { data } = await AxiosInstance.patch(`${ApiRoutes.CART}/${updateFields.id}`, {
+			quantity: updateFields.quantity
+		})
 
 		return data
 	}
