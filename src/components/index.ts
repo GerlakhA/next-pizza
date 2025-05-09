@@ -1,4 +1,5 @@
 export * from './ui'
 export * from './ui/dialog'
+export * from './ui/popover'
 export { Separator } from './ui/separator'
 export * from './ui/sheet'

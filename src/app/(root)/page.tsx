@@ -6,7 +6,6 @@ import { ProductsGroupList } from '@/widgets/products-group-list'
 import { TopBar } from '@/widgets/top-bar'
 
 export default async function Home() {
-	// const { data: pizzas, isLoading } = useGetProducts()
 	const categories = await getProductsByCategory()
 	const session = await auth()
 

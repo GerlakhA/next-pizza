@@ -1,9 +1,12 @@
 export enum ApiRoutes {
 	SEARCH_PRODUCTS = '/products/search',
+	PRODUCTS = '/products',
 	CATEGORIES = '/categories',
 	INGREDIENTS = '/ingredients',
 	CART = '/cart'
 }
+
+export const SORT_POPUP = ['Популярности', 'Цене (от мин)', 'Цене (от макс)']
 
 export const ECategory: Record<number, string> = {
 	1: 'Пиццы',
