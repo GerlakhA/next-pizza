@@ -1,4 +1,5 @@
 export { Container } from './container'
+export { ContentBlock } from './content-block'
 export { Ingredient } from './ingredient'
 export * from './modals'
 export { PizzaImage } from './pizza-image'

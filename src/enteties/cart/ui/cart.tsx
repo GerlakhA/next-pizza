@@ -48,7 +48,7 @@ export const Cart = ({ cartItems, totalPrice }: TProps) => {
 							</span>
 							<span className='font-bold text-lg'>{totalPrice} ₽</span>
 						</div>
-						<Link href='/checkout'>
+						<Link href='/order'>
 							<Button type='submit' className='w-full h-12 text-base'>
 								Оформить заказ
 								<ArrowRight className='w-5 ml-2' />
