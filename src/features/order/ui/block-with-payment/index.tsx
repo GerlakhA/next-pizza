@@ -1,11 +1,12 @@
 import { Button, Input } from '@/components'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { TPromo } from '@/config/constants'
+import { promocodes, TPromo } from '@/config/constants'
 import { TCart } from '@/config/types'
 import { priceWithPromo } from '@/lib/priceWithPromo'
 import { cn } from '@/lib/utils'
 import { ContentBlock } from '@/shared/ui'
 import { ArrowRight, Package, Truck } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { OrderDetails } from '../order-details'
 
@@ -14,28 +15,41 @@ type TProps = {
 }
 
 export const BlockWithPayment = ({ cartItems }: TProps) => {
-	const { control, getFieldState } = useFormContext()
+	const [checkPromo, setCheckPromo] = useState<boolean>(false)
+	const { control } = useFormContext()
 
 	const promo = useWatch({
 		control,
 		name: 'promo'
 	})
 
-	const validPromo = promo && !getFieldState('promo').error
-	const totalPrice = validPromo
-		? priceWithPromo(cartItems?.totalAmount, promo as TPromo)
-		: cartItems?.totalAmount
+	const isValidPromo = promocodes.includes(promo)
+	const checkValidPromo = checkPromo && isValidPromo
+
+	const totalPrice = checkPromo
+		? priceWithPromo(cartItems.totalAmount || 0, promo as TPromo) + 120
+		: cartItems.totalAmount + 120
+
+	const handleApply = () => {
+		if (isValidPromo) {
+			setCheckPromo(true)
+		}
+	}
+
+	useEffect(() => {
+		if (!isValidPromo) {
+			setCheckPromo(false)
+		}
+	}, [isValidPromo])
 
 	return (
 		<ContentBlock className='p-6 sticky top-4'>
 			<p>Итого:</p>
-			<span className={cn('h-11 text-[34px] font-bold', validPromo && 'line-through')}>
-				{cartItems?.totalAmount ? cartItems?.totalAmount + 120 : 0} ₽
+			<span className={cn('h-11 text-[34px] font-bold', checkValidPromo && 'line-through')}>
+				{cartItems.totalAmount ? cartItems.totalAmount + 120 : 0} ₽
 			</span>
-			{validPromo && (
-				<span className='h-11 text-[34px] font-bold ml-4'>
-					{priceWithPromo(cartItems?.totalAmount, promo as TPromo) + 120} ₽
-				</span>
+			{checkValidPromo && (
+				<span className='h-11 text-[34px] font-bold ml-4'>{totalPrice} ₽</span>
 			)}
 			<OrderDetails
 				title={
@@ -44,7 +58,7 @@ export const BlockWithPayment = ({ cartItems }: TProps) => {
 						Стоимость товаров:
 					</div>
 				}
-				value={`${totalPrice} ₽`}
+				value={`${totalPrice - 120} ₽`}
 			/>
 			<OrderDetails
 				title={
@@ -59,24 +73,28 @@ export const BlockWithPayment = ({ cartItems }: TProps) => {
 				name='promo'
 				control={control}
 				render={({ field }) => (
-					<FormItem>
+					<FormItem className='relative'>
 						<FormLabel>Промокод</FormLabel>
 						<FormControl>
 							<Input
 								placeholder='Введите промокод'
-								value={field.value?.toUpperCase()}
-								onChange={field.onChange}
+								{...field}
+								value={field.value.toUpperCase()}
 							/>
 						</FormControl>
 						<FormMessage />
+						{promo && (
+							<span
+								onClick={handleApply}
+								className='absolute top-[33px] right-4 text-sm text-neutral-400 hover:text-red-500 cursor-pointer'
+							>
+								Применить
+							</span>
+						)}
 					</FormItem>
 				)}
 			/>
-			<Button
-				// loading={loading}
-				type='submit'
-				className='w-full h-14 rounded-2xl mt-6 text-base font-bold'
-			>
+			<Button type='submit' className='w-full h-14 rounded-2xl mt-6 text-base font-bold'>
 				Перейти к оплате
 				<ArrowRight className='w-5 ml-2' />
 			</Button>

@@ -1,18 +1,15 @@
 'use client'
 
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
-import { MOSCOW_CENTER } from '@/enteties/order/config/constants'
+import { MARKER_ICON, MOSCOW_CENTER } from '@/enteties/order/config/constants'
 import { ContentBlock } from '@/shared/ui'
-import { Icon } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useEffect, useState } from 'react'
 import { AddressSuggestions, DaDataAddress, DaDataSuggestion } from 'react-dadata'
 import 'react-dadata/dist/react-dadata.css'
 import { useFormContext } from 'react-hook-form'
 import { MapContainer, Marker, TileLayer, useMap } from 'react-leaflet'
-import 'react-leaflet/Marker'
 
-// This component will recenter the map when coordinates change
 function MapUpdater({ center }: { center: [number, number] }) {
 	const map = useMap()
 
@@ -27,13 +24,6 @@ export const DeliveryAddress = () => {
 	const { control, setValue } = useFormContext()
 	const [coordinates, setCoordinates] = useState<[number, number]>(MOSCOW_CENTER)
 	const [mapKey, setMapKey] = useState(0)
-
-	const customIcon = new Icon({
-		iconUrl: '/marker.jpg',
-		iconSize: [25, 41],
-		iconAnchor: [12, 41],
-		popupAnchor: [1, -34]
-	})
 
 	const handleAddressSelect = (suggestion?: DaDataSuggestion<DaDataAddress>) => {
 		if (suggestion && suggestion.data.geo_lat && suggestion.data.geo_lon) {
@@ -90,7 +80,7 @@ export const DeliveryAddress = () => {
 							url='https://mt0.google.com/vt/lyrs=m&hl=ru&x={x}&y={y}&z={z}'
 							attribution=''
 						/>
-						<Marker position={coordinates} />
+						<Marker position={coordinates} icon={MARKER_ICON} />
 						<MapUpdater center={coordinates} />
 					</MapContainer>
 				</div>
