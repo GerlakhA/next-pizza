@@ -36,3 +36,7 @@ export const pizzaTypes = Object.entries(EPizzaType).map(([value, name]) => ({
 
 export type PizzaSize = keyof typeof EPizzaSize
 export type PizzaType = keyof typeof EPizzaType
+
+export const promocodes = ['NEWUSER', 'DISCOUNT20', 'SUMMER2025']
+
+export type TPromo = 'NEWUSER' | 'DISCOUNT20' | 'SUMMER2025'
