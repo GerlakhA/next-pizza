@@ -12,7 +12,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 export const Order = () => {
 	const { data: cartItems } = useGetCart()
@@ -38,21 +39,27 @@ export const Order = () => {
 		}
 	}, [session])
 
+	const onSubmit: SubmitHandler<z.infer<typeof orderFormSchema>> = data => {
+		console.log('ORDER DATA: ', data)
+	}
+
 	return (
 		<Container className='p-4'>
 			<Title text='Оформление заказа' className='font-extrabold mb-8 text-[36px]' />
 
 			<Form {...form}>
-				<div className='flex gap-10'>
-					<div className='flex flex-col flex-1 gap-10'>
-						<OrderCart cartItems={cartItems} />
-						<PersonalInfo />
-						<DeliveryAddress />
+				<form onSubmit={form.handleSubmit(onSubmit)}>
+					<div className='flex gap-10'>
+						<div className='flex flex-col flex-1 gap-10'>
+							<OrderCart cartItems={cartItems} />
+							<PersonalInfo />
+							<DeliveryAddress />
+						</div>
+						<div className='w-[450px]'>
+							<BlockWithPayment cartItems={cartItems} />
+						</div>
 					</div>
-					<div className='w-[450px]'>
-						<BlockWithPayment cartItems={cartItems} />
-					</div>
-				</div>
+				</form>
 			</Form>
 		</Container>
 	)

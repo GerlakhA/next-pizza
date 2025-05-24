@@ -1,5 +1,6 @@
 'use client'
 
+import { Textarea } from '@/components'
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { MARKER_ICON, MOSCOW_CENTER } from '@/enteties/order/config/constants'
 import { ContentBlock } from '@/shared/ui'
@@ -32,7 +33,7 @@ export const DeliveryAddress = () => {
 			setCoordinates([lat, lon])
 
 			setMapKey(prev => prev + 1)
-			setValue('address', suggestion.data)
+			setValue('address', suggestion.value)
 		}
 	}
 
@@ -84,12 +85,22 @@ export const DeliveryAddress = () => {
 						<MapUpdater center={coordinates} />
 					</MapContainer>
 				</div>
-
-				<textarea
+				<FormField
 					name='comment'
-					className='text-base p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
-					placeholder='Комментарий к заказу'
-					rows={5}
+					control={control}
+					render={({ field }) => (
+						<FormItem className='w-full'>
+							<FormControl>
+								<Textarea
+									className='text-base p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+									{...field}
+									placeholder='Комментарий к заказу'
+									rows={5}
+								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
 				/>
 			</div>
 		</ContentBlock>
